@@ -205,8 +205,8 @@ The CSS is organized into 23 numbered sections:
 
 For questions or feedback about this project:
 
-- **Email:** your-email@example.com
-- **GitHub:** yourusername
+- **Email:** gydmnt@gmail.com
+- **GitHub:** MNTaufiq78
 
 ---
 
