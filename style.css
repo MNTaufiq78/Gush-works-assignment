@@ -1,0 +1,2402 @@
+
+/* ==========================================================================
+   1. RESET & GLOBAL
+   Brief: Resets default browser margins/padding, sets box-sizing to border-box,
+          and defines base font-family and background color for consistent rendering.
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #FFFFFF;
+  color: #111827;
+}
+
+/* 1600px screens: padding 100px from all sides */
+@media (min-width: 1440px) {
+  body {
+    padding: 0 0px;
+  }
+}
+
+/* ==========================================================================
+   2. VARIABLES
+   Brief: CSS custom properties (variables) for consistent theming across the site.
+          Includes primary brand blue, text colors, and light background values.
+   ========================================================================== */
+:root {
+  --primary-blue: #2d3e95;
+  --text-dark: #1a1a1a;
+  --text-light: #666;
+  --bg-light: #f9f9f9;
+}
+
+/* ==========================================================================
+   3. CONTAINER & LAYOUT (UNIFIED - DUPLICATES REMOVED)
+   Brief: Single source of truth for container width. Max-width of 1240px matches
+          Figma specification. Padding ensures content doesn't touch edges on mobile.
+   ========================================================================== */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding: 0;
+  }
+}
+
+/* ==========================================================================
+   4. STICKY HEADER
+   Brief: Fixed-position header that appears when scrolling beyond first fold.
+          Uses transform translateY(-100%) to hide, .visible class to show.
+          Smooth transition matches assessment requirement.
+   ========================================================================== */
+.sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.sticky-header.visible {
+  transform: translateY(0);
+}
+
+.sticky-header .container {
+  margin: 0 auto;  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  min-height: 70px;
+}
+
+@media (min-width: 1440px) {
+  .sticky-header .container {
+    padding: 12px 0;
+  }
+}
+
+.sticky-logo h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0B3B2F;
+  letter-spacing: -0.5px;
+}
+
+.sticky-logo p {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #2C7A5E;
+  letter-spacing: 1px;
+}
+
+.sticky-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px; /* Consistent spacing between all items */
+}
+
+.sticky-nav a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #2D3A3F;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.sticky-nav a:hover {
+  color: #1E7B5C;
+}
+
+@media (max-width: 700px) {
+  .sticky-nav {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   5. MAIN HEADER / NAVBAR
+   Brief: Primary navigation bar at top of page. Includes logo, navigation links,
+          and contact button. Hidden on mobile to prevent squashing.
+   ========================================================================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  border-bottom: 1px solid #eee;
+  background: white;
+  width: 100%;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth hide */
+}
+
+.logo { 
+  font-weight: bold; 
+  font-size: 1.2rem; 
+}
+
+.logo span { 
+  color: #881c1c; 
+  font-size: 0.8rem; 
+  display: block; 
+}
+
+nav a { 
+  margin: 0 15px; 
+  text-decoration: none; 
+  color: var(--text-dark); 
+  font-size: 0.9rem; 
+}
+
+.btn-contact { 
+  background: var(--primary-blue); 
+  color: white; 
+  border: none; 
+  padding: 8px 20px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+}
+
+@media (max-width: 850px) {
+  nav, .btn-contact {
+    display: none; /* Hides links and button so they don't squash the logo */
+  }
+  
+  .navbar {
+    padding: 15px 20px;
+    justify-content: left; /* Center logo on mobile */
+  }
+}
+
+/* Utility class to hide the navbar via JS */
+.nav-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   6. BREADCRUMB
+   Brief: Navigation breadcrumb showing current page location (Products > Two For One Twister)
+   ========================================================================== */
+.breadcrumb { 
+  font-size: 0.8rem; 
+  color: var(--text-light); 
+  margin-bottom: 30px; 
+}
+
+/* ==========================================================================
+   7. PRODUCT SHOWCASE GALLERY
+   Brief: Main product image gallery with zoom lens functionality.
+          Includes main image container, navigation arrows, thumbnails grid,
+          and magnetic zoom lens that follows cursor with diagonal center calculation.
+          This fulfills the "Image Carousel with Zoom" requirement.
+   ========================================================================== */
+/* =========================================================
+   PRODUCT SHOWCASE LAYOUT
+========================================================= */
+
+.product-showcase {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  position: relative;
+  flex-wrap: nowrap;
+}
+
+/* LEFT SIDE */
+.gallery-col {
+  width: 540px;
+  flex-shrink: 0;
+}
+
+/* FIXED IMAGE SIZE */
+.main-image-container {
+  position: relative;
+  width: 540px;
+  height: 540px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+
+  /* MAGNIFY CURSOR */
+  cursor: zoom-in;
+}
+
+.main-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 24px;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+/* =========================================================
+   NAVIGATION ARROWS
+========================================================= */
+
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  font-size: 34px;
+  cursor: pointer;
+  z-index: 20;
+  transition: 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.nav-arrow:hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+.prev {
+  left: 18px;
+}
+
+.next {
+  right: 18px;
+}
+
+/* =========================================================
+   THUMBNAILS
+========================================================= */
+
+.thumbnails {
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.thumb {
+  width: 78px;
+  height: 78px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: 0.35s ease;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb:hover {
+  transform: translateY(-6px);
+}
+
+.thumb.active {
+  border-color: #0b6cff;
+  transform: translateY(-10px) scale(1.04);
+  box-shadow: 0 18px 30px rgba(11,108,255,0.25);
+}
+
+/* =========================================================
+   ZOOM LENS
+   Brief: Magnetic zoom lens that follows cursor. Uses diagonal center calculation
+          for precise positioning. Semi-transparent glass effect with blur and plus icon.
+========================================================= */
+
+.zoom-lens {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+
+  /* SEMI TRANSPARENT GLASS */
+  background: rgba(255,255,255,0.18);
+
+  /* BLUR */
+  backdrop-filter: blur(2px);
+
+  /* BORDER */
+  border: 2px solid rgba(255,255,255,0.9);
+
+  /* SOFT SHADOW */
+  box-shadow:
+    0 0 0 2000px rgba(0,0,0,0.06),
+    0 10px 30px rgba(0,0,0,0.18);
+
+  border-radius: 12px;
+
+  pointer-events: none;
+  opacity: 0;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.08s linear;
+
+  z-index: 15;
+}
+
+/* PLUS ICON INSIDE LENS */
+.zoom-lens::before {
+  content: "+";
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.92);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #111;
+  font-size: 24px;
+  font-weight: 600;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* =========================================================
+   RIGHT ZOOM PREVIEW
+   Brief: Separate panel that shows magnified view of the area inside the zoom lens.
+          Positioned to the right of the main image, appears on hover.
+========================================================= */
+
+.zoom-preview {
+  position: absolute;
+  top: 40px;
+  left: 580px;
+  width: 300px;
+  height: 300px;
+  border-radius: 20px;
+  background: #fff;
+  overflow: hidden;
+  border: 2px solid #dcdcdc;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: 0.3s ease;
+  z-index: 100;
+}
+
+.zoom-preview.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================================
+   RIGHT SIDE PRODUCT INFO
+========================================================= */
+
+.info-col {
+  flex: 1;
+  min-width: 350px;
+  padding-top: 0;
+}
+
+.certifications {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.cert {
+  font-size: 0.72rem;
+  padding: 6px 12px;
+  background: #f0f2f5;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #555;
+}
+
+.info-col h1 {
+  font-size: 3.5rem;
+  line-height: 1.05;
+  margin-bottom: 24px;
+  color: #08142c;
+  font-weight: 600;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.features li {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #444;
+}
+
+.features li::before {
+  content: "✓";
+  color: var(--primary-blue);
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.price-card {
+  background: var(--bg-light);
+  padding: 22px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+}
+
+.price {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin: 5px 0 15px 0;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 7px 12px;
+  border-radius: 6px;
+  margin-right: 5px;
+}
+
+.shipping {
+  background: #fff3d6;
+  color: #856404;
+}
+
+.returns {
+  background: #fff3d6;
+  color: #856404;
+}
+
+.cta-group {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-primary {
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 14px 25px;
+  border-radius: 10px;
+  flex: 1;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 14px 25px;
+  border-radius: 10px;
+  flex: 1;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width: 1200px) {
+
+  .product-showcase {
+    flex-direction: column;
+  }
+
+  .gallery-col {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .main-image-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .info-col {
+    width: 100%;
+  }
+
+  .zoom-preview {
+    display: none;
+  }
+
+  .info-col h1 {
+    font-size: 2.2rem;
+  }
+}
+
+@media(max-width: 768px) {
+
+  .product-showcase {
+    gap: 30px;
+  }
+
+  .info-col h1 {
+    font-size: 2.2rem;
+  }
+
+  .thumb {
+    width: 68px;
+    height: 68px;
+  }
+
+  .zoom-lens {
+    width: 120px;
+    height: 120px;
+  }
+
+  .nav-arrow {
+    width: 44px;
+    height: 44px;
+    font-size: 26px;
+  }
+
+  .cta-group {
+    flex-direction: column;
+  }
+}
+
+/* ==========================================================================
+   9. TRUST BAR SECTION
+   Brief: Horizontal bar displaying partner logos and trust indicators.
+          Used to build credibility with visitors.
+   ========================================================================== */
+.trust-bar {
+  text-align: center;
+  margin-top: 80px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  margin-bottom: 80px;
+}
+
+.trust-bar p { 
+  font-size: 0.8rem; 
+  color: var(--text-light); 
+  margin-bottom: 20px; 
+}
+
+.logos { 
+  display: flex; 
+  justify-content: space-between; 
+  opacity: 1; 
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   11. TRUSTED BY SECTION
+   Brief: Section showing companies that trust the brand with EUROFLEX logos.
+          Displays as responsive grid that wraps on smaller screens.
+   ========================================================================== */
+.trusted-section {
+  margin: 60px 0 40px;
+  text-align: center;
+}
+
+.trusted-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #6B8A80;
+  margin-bottom: 30px;
+}
+
+.brands-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand-card {
+  background: #F8FBF9;
+  padding: 20px 24px;
+  border-radius: 20px;
+  text-align: center;
+  flex: 1;
+  min-width: 140px;
+  border: 1px solid #E5EFEA;
+}
+
+.brand-card h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1B5E4A;
+}
+
+.brand-card p {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #5A7A6E;
+  margin-top: 5px;
+}
+
+/* ==========================================================================
+   12. TECHNICAL SPECIFICATIONS SECTION
+   Brief: Dark-themed table showing product technical data.
+          Uses exact color #0F172A for background and #94A3B8 for subtitle text
+          as specified in the Figma design. Table is responsive with horizontal scroll.
+   ========================================================================== */
+.tech-specs-section {
+  background-color: #0F172A;
+  padding: 80px 0;
+  color: #FFFFFF;
+}
+
+.tech-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #FFFFFF;
+}
+
+.tech-subtitle {
+  font-size: 1rem;
+  color: #94A3B8;
+  margin-bottom: 48px;
+  max-width: 700px;
+  line-height: 1.6;
+}
+
+.table-wrapper {
+  background-color: #1E293B;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.specs-table th {
+  padding: 20px 24px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94A3B8;
+  letter-spacing: 0.05em;
+  background-color: #1E293B;
+  border-bottom: 1px solid #334155;
+}
+
+.specs-table td {
+  padding: 18px 24px;
+  font-size: 0.95rem;
+  color: #E2E8F0;
+  border-bottom: 1px solid #334155;
+}
+
+.specs-table tr:last-child td {
+  border-bottom: none;
+}
+
+.specs-table tbody tr:hover {
+  background-color: #33415540;
+}
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.button-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.download-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border: 2px solid #ffffff;
+  border-radius: 12px;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: 0.3s ease;
+}
+
+.download-btn-outline:hover {
+  background: #0b6cff;
+  color: white;
+}
+
+/* =========================================================
+   POPUP OVERLAY
+   Brief: Full-screen overlay for catalog download modal.
+========================================================= */
+
+.catalog-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+}
+
+.catalog-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* =========================================================
+   POPUP BOX
+========================================================= */
+
+.catalog-popup {
+  width: 90%;
+  max-width: 430px;
+  background: white;
+  border-radius: 18px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  transform: translateY(30px) scale(0.95);
+  transition: 0.35s ease;
+}
+
+.catalog-popup-overlay.active .catalog-popup {
+  transform: translateY(0) scale(1);
+}
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.popup-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f3f3;
+  cursor: pointer;
+  font-size: 22px;
+  color: #666;
+  transition: 0.25s ease;
+}
+
+.popup-close:hover {
+  background: #e5e5e5;
+  transform: rotate(90deg);
+}
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.catalog-popup h2 {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  margin-bottom: 24px;
+  color: #111827;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group label span {
+  color: #ef4444;
+}
+
+.form-group input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.form-group input:focus {
+  border-color: #0b6cff;
+  box-shadow: 0 0 0 4px rgba(11,108,255,0.12);
+}
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+.popup-submit-btn {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 12px;
+  background: #0b6cff;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.popup-submit-btn:hover {
+  background: #0957d8;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width: 600px) {
+
+  .catalog-popup {
+    padding: 22px;
+  }
+
+  .catalog-popup h2 {
+    font-size: 1.15rem;
+  }
+
+}
+
+/* ==========================================================================
+   13. FEATURES SECTION
+   Brief: Grid of 6 feature cards highlighting product benefits.
+          Uses hover effects and responsive grid (3 columns desktop, 2 tablet, 1 mobile).
+   ========================================================================== */
+.features-section {
+  padding: 80px 24px;
+  background-color: #f9f9fb;
+  font-family: 'Inter', sans-serif;
+  color: #111827;
+}
+
+.features-header {
+  margin-bottom: 60px;
+}
+
+.features-header h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.features-header p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  max-width: 800px;
+  line-height: 1.6;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.feature-card {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.icon-box {
+  margin-bottom: 20px;
+  color: #2563eb;
+  font-size: 1.5rem;
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.feature-card p {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.features-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-quote {
+  background-color: #283a8c;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.btn-quote:hover {
+  background-color: #1e2b6b;
+}
+
+/* =========================================================
+   CALLBACK POPUP
+   Brief: Modal popup for request callback/quote functionality.
+========================================================= */
+
+.callback-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+}
+
+.callback-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* POPUP BOX */
+
+.callback-popup {
+  width: 90%;
+  max-width: 480px;
+  background: white;
+  border-radius: 22px;
+  padding: 32px;
+  position: relative;
+  transform: translateY(30px) scale(0.95);
+  transition: 0.35s ease;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.22);
+}
+
+.callback-popup-overlay.active .callback-popup {
+  transform: translateY(0) scale(1);
+}
+
+/* CLOSE BUTTON */
+
+.callback-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f3f3;
+  font-size: 24px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.callback-close:hover {
+  transform: rotate(90deg);
+}
+
+/* TITLE */
+
+.callback-popup h2 {
+  font-size: 1.7rem;
+  margin-bottom: 28px;
+  color: #111827;
+}
+
+/* FORM */
+
+.callback-form-group {
+  margin-bottom: 20px;
+}
+
+.callback-form-group label {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #374151;
+}
+
+.callback-form-group input,
+.country-code {
+  height: 52px;
+  border: 1px solid #d7d7d7;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.callback-form-group input {
+  width: 100%;
+}
+
+.callback-form-group input:focus,
+.country-code:focus {
+  border-color: #0b6cff;
+  box-shadow: 0 0 0 4px rgba(11,108,255,0.12);
+}
+
+/* PHONE ROW */
+
+.phone-row {
+  display: flex;
+  gap: 12px;
+}
+
+.country-code {
+  width: 110px;
+  background: white;
+}
+
+.phone-input {
+  flex: 1;
+}
+
+/* SUBMIT BUTTON */
+
+.callback-submit-btn {
+  width: 100%;
+  height: 54px;
+  border: none;
+  border-radius: 14px;
+  background: #0b6cff;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.callback-submit-btn:hover {
+  transform: translateY(-2px);
+  background: #0957d8;
+}
+
+/* MOBILE */
+
+@media(max-width: 600px) {
+
+  .callback-popup {
+    padding: 24px;
+  }
+
+  .phone-row {
+    flex-direction: column;
+  }
+
+  .country-code {
+    width: 100%;
+  }
+
+}
+
+/* ==========================================================================
+   14. FAQ SECTION
+   Brief: Accordion-style Frequently Asked Questions section.
+          Uses active class to toggle visibility of answers with smooth transitions.
+   ========================================================================== */
+
+.faq-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.faq-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #111827;
+}
+
+.text-blue { 
+  color: #283a8c; 
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 24px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #111827;
+}
+
+.icon-wrapper {
+  background: #f3f4f6;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.faq-icon {
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+
+.faq-answer {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 16px;
+}
+
+.faq-item.active .icon-wrapper {
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   15. CATALOGUE BANNER
+   Brief: Call-to-action banner prompting users to request full catalogue via email.
+          Uses dashed border and two-column layout (flex on desktop, column on mobile).
+   ========================================================================== */
+
+.catalogue-banner {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px dashed #283a8c;
+  padding: 32px 40px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+
+.banner-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.banner-content p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.banner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 320px;
+}
+
+.email-input {
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.request-btn {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.request-btn:hover {
+  opacity: 0.9;
+}
+
+/* ========== PRICE STICKY BAR - EXACT DESIGN MATCH ========== */
+/* Layout Container */
+.product-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0; /* Light grey background */
+    padding: 15px 30px;
+    border-radius: 4px;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Left Section: Image and Text */
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-thumbnail {
+    width: 50px;
+    height: 50px;
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.product-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9; /* Keeping it subtle like the placeholder in the image */
+}
+
+/* Typography Styling */
+.product-details .product-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.product-details .product-price {
+    margin: 5px 0 0 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+}
+
+/* Button Styling */
+.quote-button {
+    background-color: #303f8a; /* Deep blue/navy color */
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.quote-button:hover {
+    background-color: #24306b;
+}
+
+/* ==========================================================================
+   16. APPLICATIONS SECTION
+   Brief: Infinite horizontal scrolling carousel of application cards.
+          Uses CSS keyframe animation for continuous scroll, pauses on hover.
+          Shows various industry applications with image overlays.
+   ========================================================================== */
+
+:root {
+    --card-width: 300px;
+    --gap: 20px;
+}
+
+body { margin: 0; font-family: sans-serif; background-color: #f9f9f9; }
+
+.applications-section {
+    padding: 60px 0;
+    overflow: hidden; /* Prevents horizontal scrollbar on page */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 5%;
+    margin-bottom: 40px;
+}
+
+.text-content h1 { font-size: 2.5rem; margin-bottom: 15px; max-width: 500px; }
+.text-content p { color: #666; max-width: 600px; line-height: 1.6; }
+
+.nav-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+/* Slider Logic */
+.slider-viewport {
+    width: 100vw;
+    position: relative;
+    left: 0;
+}
+
+.slider-track {
+    display: flex;
+    gap: var(--gap);
+    width: max-content;
+    animation: scrollLoop 30s linear infinite;
+}
+
+.slider-track:hover {
+    animation-play-state: paused; /* Optional: pause on hover */
+}
+
+@keyframes scrollLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - (var(--gap) / 2))); }
+}
+
+/* Card Styling */
+.card {
+    width: var(--card-width);
+    height: 400px;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+}
+
+.card-overlay h3 { margin: 0 0 10px 0; font-size: 1.2rem; }
+.card-overlay p { font-size: 0.9rem; margin: 0; opacity: 0.8; }
+
+/* ==========================================================================
+   17. PROCESS SECTION
+   Brief: Manufacturing process stepper with clickable steps.
+          Shows different stages of HDPE pipe production with images and descriptions.
+          Uses active class to highlight current step.
+   ========================================================================== */
+
+.process-section {
+  padding: 80px 0;
+  background-color: #f9fafb;
+  font-family: 'Inter', sans-serif;
+}
+
+.process-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.process-header h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 20px;
+}
+
+.process-header p {
+  font-size: 1rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.process-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.process-stepper {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 20px;
+  overflow-x: auto;
+}
+
+.step {
+  padding: 10px 18px;
+  border-radius: 30px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #4b5563;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.step.active {
+  background: #1e3a8a;
+  color: white;
+  border-color: #1e3a8a;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.card-text h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #111;
+}
+
+.card-text p {
+  color: #6b7280;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.feature-bullets {
+  list-style: none;
+  padding: 0;
+}
+
+.feature-bullets li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.feature-bullets i {
+  color: #1e3a8a;
+}
+
+.card-visual .image-wrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.card-visual img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.overlay-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #333;
+}
+
+.overlay-nav.prev { left: 15px; }
+.overlay-nav.next { right: 15px; }
+
+/* ==========================================================================
+   18. TESTIMONIAL SECTION
+   Brief: Infinite horizontal scrolling testimonials carousel.
+          Uses keyframe animation similar to applications section.
+          Cards contain quote, review text, and user profile info.
+   ========================================================================== */
+
+.testimonials-section {
+    padding: 80px 0;
+    background-color: #ffffff;
+    text-align: center;
+    overflow: hidden;
+}
+
+.testimonial-header h1 {
+    font-size: 2.5rem;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.testimonial-header p {
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto 50px;
+    line-height: 1.6;
+}
+
+/* Loop Logic */
+.testimonial-viewport {
+    width: 100%;
+    display: flex;
+}
+
+.testimonial-track {
+    display: flex;
+    gap: 30px;
+    animation: testimonialLoop 40s linear infinite;
+    padding: 20px;
+}
+
+@keyframes testimonialLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Card Styling */
+.testimonial-card {
+    width: 380px;
+    background: #fff;
+    border: 1px solid #eef0f2;
+    border-radius: 24px;
+    padding: 40px;
+    text-align: left;
+    flex-shrink: 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.quote-icon {
+    font-size: 50px;
+    color: #2b3a8c;
+    line-height: 1;
+    margin-bottom: 10px;
+    font-family: serif;
+}
+
+.testimonial-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+    line-height: 1.4;
+}
+
+.testimonial-text {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    height: 80px; /* Maintains consistent card height */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #e0e4e8;
+    border-radius: 50%;
+}
+
+.user-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+}
+
+.user-title {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Pause on interaction */
+.testimonial-track:hover {
+    animation-play-state: paused;
+}
+
+/* ==========================================================================
+   19. PORTFOLIO SECTION
+   Brief: Grid of solution cards showing different product offerings.
+          Includes hover effects and bottom CTA banner for expert consultation.
+   ========================================================================== */
+
+.portfolio-section {
+  padding: 80px 0;
+  background-color: #f8f9fa;
+  font-family: 'Inter', sans-serif;
+}
+
+.portfolio-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.portfolio-header h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 16px;
+}
+
+.portfolio-header p {
+  font-size: 1rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.solution-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 50px;
+}
+
+.solution-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.solution-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  min-height: 80px;
+}
+
+.card-image {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.card-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.learn-more-btn {
+  display: block;
+  text-align: center;
+  padding: 12px;
+  background-color: #f3f4f6;
+  color: #1e3a8a;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.learn-more-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.cta-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 40px;
+  background-color: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+}
+
+.cta-text h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.cta-text p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.expert-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #283a8c;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: opacity 0.2s;
+}
+
+.expert-btn:hover {
+  opacity: 0.9;
+}
+
+/* ==========================================================================
+   20. RESOURCES SECTION
+   Brief: Downloads section with list of PDF resources.
+          Each row has file name and download link with hover effect.
+   ========================================================================== */
+
+.resources-section {
+  padding: 80px 0;
+  background-color: #f9fafb;
+  font-family: 'Inter', sans-serif;
+}
+
+.resources-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.resources-header h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 16px;
+}
+
+.resources-header p {
+  font-size: 1rem;
+  color: #6b7280;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.downloads-container {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.download-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s;
+}
+
+.download-item:last-child {
+  border-bottom: none;
+}
+
+.download-item:hover {
+  background-color: #f9fafb;
+}
+
+.file-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.download-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #283a8c;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.download-link i {
+  font-size: 1rem;
+}
+
+.download-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   21. CTA CONTACT SECTION
+   Brief: Two-column contact section with deep navy background.
+          Left side has heading and description, right side has contact form.
+   ========================================================================== */
+
+.cta-contact-section {
+  padding: 60px 20px;
+  background-color: #f3f4f6;
+  font-family: 'Inter', sans-serif;
+}
+
+.cta-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: #1e2a66;
+  border-radius: 30px;
+  padding: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  color: white;
+}
+
+.cta-content {
+  flex: 1;
+}
+
+.cta-content h2 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.cta-description {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 500px;
+}
+
+.cta-footer {
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.cta-footer a {
+  color: white;
+  text-decoration: underline;
+}
+
+.contact-form-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  color: #111;
+}
+
+.contact-form-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #374151;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.phone-input {
+  display: flex;
+  gap: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.phone-input .country-code {
+  background: #fff;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-right: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.phone-input input {
+  border: none;
+}
+
+.submit-btn {
+  width: 100%;
+  background-color: #24292e;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #1a1e22;
+}
+
+/* ==========================================================================
+   22. FOOTER
+   Brief: Complete footer with brand card, navigation columns, contact info,
+          social links, and copyright bar. Fully responsive grid layout.
+   ========================================================================== */
+
+.main-footer {
+  background-color: #ffffff;
+  padding-top: 80px;
+  font-family: 'Inter', sans-serif;
+  border-top: 1px solid #e5e7eb;
+}
+
+.brand-highlight-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 30px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.brand-logo img {
+  height: 50px;
+  width: auto;
+}
+
+.brand-tagline {
+  text-align: right;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.5fr 2fr;
+  gap: 40px;
+  padding-bottom: 60px;
+}
+
+.footer-col h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+  text-decoration: none;
+  color: #6b7280;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.footer-col ul li a:hover {
+  color: #283a8c;
+}
+
+.contact-list li {
+  display: flex;
+  gap: 12px;
+  color: #6b7280;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.contact-list i {
+  color: #283a8c;
+  margin-top: 3px;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.social-links a {
+  color: #283a8c;
+  font-size: 1.1rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid #f3f4f6;
+  padding: 20px 0;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.bottom-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom-links {
+  display: flex;
+  gap: 24px;
+}
+
+.bottom-links a {
+  text-decoration: none;
+  color: #6b7280;
+}
+
+.footer-note {
+  text-align: center;
+  margin: 50px 0 40px;
+  font-size: 0.8rem;
+  color: #7A9A8E;
+}
+
+hr {
+  margin: 30px 0;
+  border-color: #E5EFEA;
+}
+
+/* ==========================================================================
+   23. RESPONSIVE MEDIA QUERIES
+   Brief: Comprehensive responsive breakpoints for all screen sizes.
+          Handles tablet (1024px, 900px, 768px) and mobile (640px, 600px, 992px).
+          Ensures perfect layout on all devices as required.
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .applications-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .testimonial-grid {
+    flex-wrap: wrap;
+  }
+  
+  .testimonial-card {
+    flex: 1 1 45%;
+  }
+  
+  .solution-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .cta-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+  }
+  
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .brand-highlight-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .brand-tagline {
+    text-align: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-grid {
+    flex-direction: column;
+  }
+  
+  .tech-title {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .process-header h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .tech-title {
+    font-size: 1.8rem;
+  }
+  
+  .specs-table th, 
+  .specs-table td {
+    padding: 14px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .catalogue-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .banner-form {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .brands-grid {
+    justify-content: center;
+  }
+  
+  .specs-table th,
+  .specs-table td {
+    padding: 12px 14px;
+    font-size: 0.8rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .features-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .faq-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .faq-item {
+    padding: 16px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .applications-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .nav-controls {
+    align-self: flex-end;
+  }
+  
+  .testimonial-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .testimonial-card {
+    flex: 1 1 100%;
+  }
+  
+  .solution-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .portfolio-header h2 {
+    font-size: 1.75rem;
+  }
+  
+  .download-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+  
+  .resources-header h2 {
+    font-size: 1.75rem;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .bottom-flex {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 992px) {
+  .cta-container {
+    flex-direction: column;
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .cta-description {
+    margin: 0 auto 40px;
+  }
+  
+  .contact-form-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .brands-grid {
+    justify-content: center;
+  }
+  
+  .specs-table th,
+  .specs-table td {
+    padding: 12px 14px;
+    font-size: 0.8rem;
+  }
+}

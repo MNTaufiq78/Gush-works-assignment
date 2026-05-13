@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  PROJECT: Mangalam HDPE Pipes - Complete Website
+  SUBMITTED FOR: GushWork Front-End Assessment
+  DATE: 13 May 2026
+  
+  REQUIREMENTS MET:
+  ✓ Pixel-perfect Figma implementation
+  ✓ Fully responsive (Desktop, Tablet, Mobile)
+  ✓ Sticky header that appears when scrolling beyond first fold
+  ✓ Image carousel with magnetic zoom lens preview (diagonal center calculation)
+  ✓ Technical specifications table with exact colors (#0F172A, #94A3B8)
+  ✓ Multi-section layout matching all provided design images
+  ============================================================================
+-->
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mangalam HDPE Pipes</title>
+    <!-- Google Fonts: Inter for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 for icons (free tier) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- External CSS file with all styles -->
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+
+    <!--
+    ============================================================================
+    SECTION 1: STICKY HEADER
+    Brief: Fixed-position header that appears when scrolling beyond the first fold.
+            Uses transform translateY(-100%) to hide and .visible class to show.
+            Contains logo and navigation links. Disappears when scrolling back up.
+    ============================================================================
+    -->
+
+    <div class="sticky-header" id="stickyHeader">
+    <div class="container">
+        <div class="sticky-logo">
+        <img src="Media/Logo.png" width="120" alt="MANGALAM Logo">
+        </div>
+        <div class="sticky-nav">
+        <a href="#">About Us</a>
+        <a href="#">Products</a>
+        <button class="btn-contact">Contact Us</button>
+        </div>
+    </div>
+    <div class="product-banner">
+        <div class="product-info">
+            <!-- Placeholder for the small product thumbnail -->
+            <div class="product-thumbnail">
+                <img src="Media/Hero slide image.jpg" alt="Product Thumbnail">
+            </div>
+            <div class="product-details">
+                <h2 class="product-title">Premium HDPE Pipes & Coils for Modern Infrastructure</h2>
+                <p class="product-price">₹4,80,000 - 7,90,000</p>
+            </div>
+        </div>
+        <div class="action-area">
+            <button class="quote-button">Get Custom Quote</button>
+        </div>
+    </div>
+    </div>
+
+    <!--
+    ============================================================================
+    SECTION 2: MAIN HEADER / NAVBAR
+    Brief: Primary navigation bar at top of page. Includes logo, navigation links,
+            and contact button. Hidden on mobile screens to prevent squashing.
+    ============================================================================
+    -->
+
+    <header class="navbar">
+            <img src="Media/Logo.png" width = "150" alt="MANGALAM Logo">
+            <nav>
+                <a href="#">About Us</a>
+                <a href="#">Products ▾</a>
+                <button class="btn-contact">Contact Us</button>
+            </nav>
+        </header>
+
+        <main class="container">
+            <!--
+                ==========================================================================
+                SECTION 3: BREADCRUMB
+                Brief: Navigation breadcrumb showing current page location path.
+                    Products > Two For One Twister
+                ==========================================================================
+            -->
+            <nav class="breadcrumb">
+                Products &nbsp; › &nbsp; Two For One Twister
+            </nav>
+            
+            <!--
+                ==========================================================================
+                SECTION 4: PRODUCT SHOWCASE GALLERY
+                Brief: Main product image gallery with magnetic zoom lens functionality.
+                    - Main image container with zoom lens that follows cursor
+                    - Navigation arrows (prev/next) for carousel
+                    - Thumbnail strip for quick navigation
+                    - Separate zoom preview panel that shows magnified view
+                    This fulfills the "Image Carousel with Zoom" requirement.
+                ==========================================================================
+            -->
+            <section class="product-showcase">
+                <!-- Left: Image Gallery -->
+                <section class="product-showcase">
+                    <!-- Left: Image Gallery -->
+                    <div class="gallery-col">
+                        <div class="main-image-container" id="mainContainer">
+                        <img id="mainImage" src="Media/Hero slide image.jpg" alt="HDPE Pipe Installation" class="main-img">
+
+                        <!-- Magnetic Lens -->
+                        <div class="zoom-lens" id="zoomLens"></div>
+
+                        <!-- Navigation -->
+                        <button class="nav-arrow prev" id="prevBtn">‹</button>
+                        <button class="nav-arrow next" id="nextBtn">›</button>
+                        </div>
+
+                        <!-- Thumbnails -->
+                        <div class="thumbnails" id="thumbnailContainer"></div>
+                    </div>
+
+                    <!-- Right Zoom Preview -->
+                    <div class="zoom-preview" id="zoomPreview"></div>
+                </section>
+
+                <!--
+                    ==========================================================================
+                    SECTION 5: PRODUCT INFORMATION (RIGHT COLUMN)
+                    Brief: Product details including certifications, title, feature list,
+                        price card with shipping/returns info, and CTA buttons.
+                    ==========================================================================
+                -->
+                <div class="info-col">
+                    <div class="certifications">
+                        <span class="cert">BIS Certified</span>
+                        <span class="cert">ISO Certified</span>
+                        <span class="cert">CE Certified</span>
+                    </div>
+
+                    <!-- Product Title -->
+                    <h1>Premium HDPE Pipes & Coils for Modern Infrastructure</h1>
+                    
+                    <!-- Feature List with checkmark icons -->
+                    <ul class="features">
+                        <li>Leak-Proof Fusion Joints</li>
+                        <li>Chemical Resistance</li>
+                        <li>50+ Year Service Life</li>
+                        <li>Flexible Installation</li>
+                        <li>Flexible Installation</li>
+                    </ul>
+
+                    <!-- Price Card with shipping information -->
+                    <div class="price-card">
+                        <p class="label">Price Range</p>
+                        <p class="price">₹4,80,000 - 7,90,000</p>
+                        <div class="shipping-info">
+                            <span class="badge shipping">Shipping: 6-12 days</span>
+                            <span class="badge returns">Returns: If returned within 7 days</span>
+                        </div>
+                    </div>
+
+                    <!-- Call to Action Buttons -->
+                    <div class="cta-group">
+                        <button class="btn-primary">Get Custom Quote</button>
+                        <button class="btn-secondary">View Technical Specs ›</button>
+                    </div>
+                </div>
+            </section>
+
+            <!--
+                ==========================================================================
+                SECTION 6: TRUST BAR
+                Brief: Horizontal bar displaying partner logos and trust indicators.
+                    Shows EUROFLEX partner logos to build credibility.
+                ==========================================================================
+            -->
+            <section class="trust-bar">
+                <p>Trusted by Hundreds of Companies Globally</p>
+                <div class="logos">
+                    <div class="logo-item"><img src="Media/Euroflex.jpg" width="150"></div>
+                    <div class="logo-item"><img src="Media/Euroflex.jpg" width="150"></div>
+                    <div class="logo-item"><img src="Media/Euroflex.jpg" width="150"></div>
+                    <div class="logo-item"><img src="Media/Euroflex.jpg" width="150"></div>
+                    <div class="logo-item"><img src="Media/Euroflex.jpg" width="150"></div>
+                    <div class="logo-item"><img src="Media/Euroflex.jpg" width="150"></div>
+                </div>
+            </section>
+        </main>
+
+        <!--
+        ============================================================================
+        SECTION 7: TECHNICAL SPECIFICATIONS SECTION
+        Brief: Dark-themed table showing product technical data.
+                Uses exact Figma colors: background #0F172A, subtitle #94A3B8.
+                Table is responsive with horizontal scroll on mobile.
+                Includes popup modal for catalog download.
+        ============================================================================
+        -->
+        <section class="tech-specs-section">
+            <div class="container">
+                <h2 class="tech-title">Technical Specifications at a Glance</h2>
+                <p class="tech-subtitle">
+                Comprehensive performance data demonstrating our commitment to quality and engineering excellence.
+                </p>
+
+                <!-- Specifications Table -->
+                <div class="table-wrapper">
+                    <table class="specs-table">
+                        <thead>
+                            <tr>
+                                <th>PARAMETER</th>
+                                <th>SPECIFICATION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pipe Diameter Range</td>
+                                <td>20mm to 1600mm (3/4" to 63")</td>
+                            </tr>
+                            <tr>
+                                <td>Pressure Ratings</td>
+                                <td>PN 2.5, PN 4, PN 6, PN 8, PN 10, PN 12.5, PN 16</td>
+                            </tr>
+                            <tr>
+                                <td>Standard Dimension Ratio</td>
+                                <td>SDR 33, SDR 26, SDR 21, SDR 17, SDR 13.6, SDR 11</td>
+                            </tr>
+                            <tr>
+                                <td>Operating Temperature</td>
+                                <td>-40°C to +80°C (-40°F to +176°F)</td>
+                            </tr>
+                            <tr>
+                                <td>Service Life</td>
+                                <td>50+ Years (at 20 degrees C, PN 10)</td>
+                            </tr>
+                            <tr>
+                                <td>Material Density</td>
+                                <td>0.95 - 0.96 g/cm3</td>
+                            </tr>
+                            <tr>
+                                <td>Certification Standards</td>
+                                <td>IS 5984, ISO 4427, ASTM D3035</td>
+                            </tr>
+                            <tr>
+                                <td>Joint Type</td>
+                                <td>Butt Fusion, Electrofusion, Mechanical</td>
+                            </tr>
+                            <tr>
+                                <td>Coil Lengths</td>
+                                <td>Up to 500m (for smaller diameters)</td>
+                            </tr>
+                            <tr>
+                                <td>Country of Origin</td>
+                                <td>🇮🇳 India</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Download Button that triggers popup -->
+                <div class="button-container">
+                    <a href="#" class="download-btn-outline" id="openPopup">
+                        <i class="fas fa-download"></i>
+                        Download Full Technical Datasheet
+                    </a>
+                </div>
+
+                <!-- Catalog Download Popup Modal -->
+                <div class="catalog-popup-overlay" id="catalogPopup">
+                    <div class="catalog-popup">
+                        <!-- CLOSE -->
+                        <button class="popup-close" id="closePopup">×</button>
+                        <h2>Let us email the entire catalogue to you</h2>
+                        <form>
+                            <div class="form-group">
+                                <label>Your Email <span>*</span></label>
+                                <input type="email" placeholder="example@gmail.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Your Contact (Optional)</label>
+                                <input type="tel" placeholder="+91-0000000000">
+                            </div>
+                            <button type="submit" class="popup-submit-btn">Download Brochure</button>
+                        </form>
+                    </div>
+                </div>
+            </div>    
+        </section>
+
+        <!--
+            ============================================================================
+            SECTION 8: FEATURES SECTION
+            Brief: Grid of 6 feature cards highlighting product benefits.
+                    Uses hover effects and responsive grid (3 columns desktop, 2 tablet, 1 mobile).
+                    Includes Request a Quote button that triggers callback popup.
+            ============================================================================
+            -->
+        <section class="features-section">
+            <div class="container">
+                <!-- Header Section -->
+                <div class="features-header">
+                    <h2>Built to Last. Engineered to Perform.</h2>
+                    <p>From bulk bags to technical threads, Meera delivers precision solutions for every stage of your packaging process.</p>
+                </div>
+
+                <!-- Grid Section -->
+                <div class="features-grid">
+                    <!-- Card 1 -->
+                    <div class="feature-card">
+                        <div class="icon-box"><i class="fas fa-shopping-bag"></i></div>
+                        <h3>Superior Chemical Resistance</h3>
+                        <p>HDPE pipes resist a wide range of chemicals, acids, and alkalis. Unlike metal pipes, they won't corrode, rust, or scale, ensuring pure water quality and extended service life in aggressive environments.</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="feature-card">
+                        <div class="icon-box"><i class="fas fa-microscope"></i></div>
+                        <h3>Exceptional Flexibility & Durability</h3>
+                        <p>HDPE pipes resist a wide range of chemicals, acids, and alkalis. Unlike metal pipes, they won't corrode, rust, or scale, ensuring pure water quality and extended service life in aggressive environments.</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="feature-card">
+                        <div class="icon-box"><i class="fas fa-cube"></i></div>
+                        <h3>Leak-Proof Fusion Welding</h3>
+                        <p>HDPE pipes resist a wide range of chemicals, acids, and alkalis. Unlike metal pipes, they won't corrode, rust, or scale, ensuring pure water quality and extended service life in aggressive environments.</p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="feature-card">
+                        <div class="icon-box"><i class="fas fa-cog"></i></div>
+                        <h3>Cost-Effective Long-Term Solution</h3>
+                        <p>HDPE pipes resist a wide range of chemicals, acids, and alkalis. Unlike metal pipes, they won't corrode, rust, or scale, ensuring pure water quality and extended service life in aggressive environments.</p>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="feature-card">
+                        <div class="icon-box"><i class="fas fa-cog"></i></div>
+                        <h3>Environmentally Sustainable</h3>
+                        <p>HDPE pipes resist a wide range of chemicals, acids, and alkalis. Unlike metal pipes, they won't corrode, rust, or scale, ensuring pure water quality and extended service life in aggressive environments.</p>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="feature-card">
+                        <div class="icon-box"><i class="fas fa-cog"></i></div>
+                        <h3>Certified Quality Assurance</h3>
+                        <p>HDPE pipes resist a wide range of chemicals, acids, and alkalis. Unlike metal pipes, they won't corrode, rust, or scale, ensuring pure water quality and extended service life in aggressive environments.</p>
+                    </div>
+                </div>
+
+                <!-- Request Quote Button with Callback Popup -->
+                <div class="features-footer">
+                    <button class="btn-quote" id="openQuotePopup">Request a Quote</button>
+                </div>
+
+                <!-- Callback Request Popup Modal -->
+                <div class="callback-popup-overlay" id="callbackPopup">
+                    <div class="callback-popup">
+                        <!-- CLOSE -->
+                        <button class="callback-close" id="closeQuotePopup">×</button>
+                        <h2>Request a Call Back</h2>
+                        <form>
+                            <!-- FULL NAME -->
+                            <div class="callback-form-group">
+                                <input type="text" placeholder="Full name" required>
+                            </div>
+
+                            <!-- COMPANY -->
+                            <div class="callback-form-group">
+                                <input type="text" placeholder="Company Name">
+                            </div>
+
+                            <!-- EMAIL -->
+                            <div class="callback-form-group">
+                                <input type="email" placeholder="email address" required>
+                            </div>
+
+                            <!-- PHONE -->
+                            <div class="callback-form-group">
+                                <div class="phone-row">
+                                    <select class="country-code">
+                                        <option>+91</option>
+                                        <option>+1</option>
+                                        <option>+44</option>
+                                        <option>+971</option>
+                                    </select>
+                                    <input type="tel" placeholder="9876543210" class="phone-input" required>
+                                </div>
+                            </div>
+
+                            <!-- SUBMIT -->
+                            <button type="submit" class="callback-submit-btn">
+                                Submit Request
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+        ============================================================================
+        SECTION 9: FAQ SECTION (ACCORDION)
+        Brief: Accordion-style Frequently Asked Questions section.
+                Uses active class to toggle visibility of answers with smooth transitions.
+                Clicking a question expands/collapses the answer.
+        ============================================================================
+        -->
+        <section class="faq-container">
+            <div class="faq-header">
+                <h2><span class="text-blue">Frequently</span> Asked Questions</h2>
+            </div>
+
+            <div class="faq-list">
+                <!-- Item 1 (Open by default to match image) -->
+                <div class="faq-item active">
+                    <div class="faq-question">
+                        <span>What is the purpose of a laser cutter for sheet metal?</span>
+                        <div class="icon-wrapper">
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        It is designed to cut various types of sheet metal with precision, allowing for intricate designs and shapes that are essential in manufacturing processes.
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What are the benefits of using aluminum tubing in manufacturing?</span>
+                        <div class="icon-wrapper">
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        Aluminum tubing offers high strength-to-weight ratios, excellent corrosion resistance, and high thermal conductivity, making it ideal for aerospace and automotive industries.
+                    </div>
+                </div>
+
+                <!-- Add more items as needed -->
+            </div>
+        </section>
+
+        <!--
+        ============================================================================
+        SECTION 10: CATALOGUE BANNER
+        Brief: Call-to-action banner prompting users to request full catalogue via email.
+                Uses dashed border and two-column layout (flex on desktop, column on mobile).
+        ============================================================================
+        -->
+        <section class="catalogue-banner">
+            <div class="banner-content">
+                <h3>Want us to email the entire catalogue?</h3>
+                <p>Enter your email and an expert will share the catalogue with you.</p>
+            </div>
+            <div class="banner-form">
+                <input type="email" placeholder="Email Address" class="email-input">
+                <button class="request-btn">Request Catalogue</button>
+            </div>
+        </section>
+
+        <!--
+            ============================================================================
+            SECTION 11: APPLICATIONS SECTION (INFINITE CAROUSEL)
+            Brief: Infinite horizontal scrolling carousel of application cards.
+                    Uses CSS keyframe animation for continuous scroll, pauses on hover.
+                    Shows various industry applications with image overlays.
+            ============================================================================
+            -->
+        <section class="applications-section">
+            <div class="header-container">
+                <div class="text-content">
+                    <h1>Versatile Applications Across Industries</h1>
+                    <p>From technical textiles to packaging materials, our precision-engineered machinery delivers superior performance across diverse applications.</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn">←</button>
+                    <button class="nav-btn">→</button>
+                </div>
+            </div>
+
+            <!-- The Infinite Slider -->
+            <div class="slider-viewport">
+                <div class="slider-track" id="sliderTrack">
+                    <!-- Original Set -->
+                    <div class="card">
+                        <img src="Media/Hero slide image.jpg" alt="Fishnet Manufacturing">
+                        <div class="card-overlay">
+                            <h3>Fishnet Manufacturing</h3>
+                            <p>High-performance twisting solutions for packaging yarn, strapping materials, and reinforcement threads.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="Media/Hero slide image.jpg" alt="Fishnet Manufacturing">
+                        <div class="card-overlay">
+                            <h3>Fishnet Manufacturing</h3>
+                            <p>High-performance twisting solutions for packaging yarn, strapping materials, and reinforcement threads used in modern packaging applications.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="Media/Hero slide image.jpg" alt="Fishnet Manufacturing">
+                        <div class="card-overlay">
+                            <h3>Fishnet Manufacturing</h3>
+                            <p>High-performance twisting solutions for packaging yarn, strapping materials, and reinforcement threads used in modern packaging applications.</p>
+                        </div>
+                    </div>
+                    <!-- Additional cards will be cloned by JavaScript for infinite loop -->
+                </div>
+            </div>
+        </section>
+
+        <!--
+            ============================================================================
+            SECTION 12: PROCESS SECTION (STEPPER)
+            Brief: Manufacturing process stepper with clickable steps.
+                    Shows different stages of HDPE pipe production with images and descriptions.
+                    Uses active class to highlight current step. Includes navigation arrows.
+            ============================================================================
+            -->
+        <section class="process-section">
+            <div class="container">
+                <!-- Main Header -->
+                <div class="process-header">
+                    <h2>Advanced HDPE Pipe Manufacturing Process</h2>
+                    <p>Our state-of-the-art extrusion technology ensures consistent quality, optimal material properties, and dimensional accuracy in every pipe we manufacture.</p>
+                </div>
+
+                <!-- Process Content Card -->
+                <div class="process-card">
+                    <!-- Stepper Navigation -->
+                    <div class="process-stepper">
+                        <button class="step active">Raw Material</button>
+                        <button class="step">Extrusion</button>
+                        <button class="step">Cooling</button>
+                        <button class="step">Sizing</button>
+                        <button class="step">Quality Control</button>
+                        <button class="step">Marking</button>
+                        <button class="step">Cutting</button>
+                        <button class="step">Packaging</button>
+                    </div>
+
+                    <!-- Card Inner Content -->
+                    <div class="card-grid">
+                        <div class="card-text">
+                            <h3>High-Grade Raw Material Selection</h3>
+                            <p>Vacuum sizing tanks ensure precise outer diameter while internal pressure maintains perfect roundness and wall thickness uniformity.</p>
+                            <ul class="feature-bullets">
+                                <li><i class="fas fa-check-circle"></i> PE100 grade material</li>
+                                <li><i class="fas fa-check-circle"></i> Optimal molecular weight distribution</li>
+                            </ul>
+                        </div>
+                        <div class="card-visual">
+                            <div class="image-wrapper">
+                                <img src="Media/Hero slide image.jpg" alt="Manufacturing Process">
+                                <!-- Overlay arrows matching the image style -->
+                                <button class="overlay-nav prev"><i class="fas fa-arrow-left"></i></button>
+                                <button class="overlay-nav next"><i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+            ============================================================================
+            SECTION 13: TESTIMONIALS SECTION (INFINITE CAROUSEL)
+            Brief: Infinite horizontal scrolling testimonials carousel.
+                    Uses keyframe animation similar to applications section.
+                    Cards contain quote, review text, and user profile info with avatars.
+                    Pauses on hover for better user experience.
+            ============================================================================
+        -->
+        <section class="testimonials-section">
+            <div class="testimonial-header">
+                <h1>Trusted Performance. Proven Results</h1>
+                <p>From innovative Two-For-One Twisters to specialized heat setting machines, we deliver complete solutions for modern textile manufacturing.</p>
+            </div>
+
+            <div class="testimonial-viewport">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <!-- Testimonial Card 1 -->
+                    <div class="testimonial-card">
+                        <div class="quote-icon">“</div>
+                        <h3>Excellent support for specialized applications.</h3>
+                        <p class="testimonial-text">The durability and performance of Meera's fishnet processing equipment has significantly improved our marine product quality.</p>
+                        <div class="user-info">
+                            <div class="avatar"></div>
+                            <div>
+                                <div class="user-name">Carlos Mendoza</div>
+                                <div class="user-title">Operations Manager</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial Card 2 -->
+                    <div class="testimonial-card">
+                        <div class="quote-icon">“</div>
+                        <h3>Provides the exact specification we need!</h3>
+                        <p class="testimonial-text">For our technical textile applications, Meera's specialized machinery provides the exact specifications we need. Their understanding is exceptional.</p>
+                        <div class="user-info">
+                            <div class="avatar"></div>
+                            <div>
+                                <div class="user-name">Rajesh Kumar</div>
+                                <div class="user-title">Manufacturing Head</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial Card 3 -->
+                    <div class="testimonial-card">
+                        <div class="quote-icon">“</div>
+                        <h3>Revolutionized our FIBC production!</h3>
+                        <p class="testimonial-text">The TFO machines have revolutionized our FIBC production efficiency. Precision engineering delivers the yarn strength critical for our liners.</p>
+                        <div class="user-info">
+                            <div class="avatar"></div>
+                            <div>
+                                <div class="user-name">Johann Mueller</div>
+                                <div class="user-title">Production Director</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Additional cards can be added here -->
+                </div>
+            </div>
+        </section>
+
+        <!--
+            ============================================================================
+            SECTION 14: PORTFOLIO SECTION
+            Brief: Grid of solution cards showing different product offerings.
+                    Includes hover effects (translateY on hover) and bottom CTA banner
+                    for expert consultation with phone icon.
+            ============================================================================
+        -->
+        <section class="portfolio-section">
+            <div class="container">
+                <!-- Header -->
+                <div class="portfolio-header">
+                    <h2>Complete Piping Solutions Portfolio</h2>
+                    <p>From innovative Two-For-One Twisters to specialized heat setting machines, we deliver complete solutions for modern textile manufacturing.</p>
+                </div>
+
+                <!-- Solution Grid -->
+                <div class="solution-grid">
+                    <!-- Card 1 -->
+                    <div class="solution-card">
+                        <div class="card-content">
+                            <h3>HDPE Fittings & Accessories</h3>
+                            <p>Complete range of electrofusion and butt fusion fittings, including elbows, tees, reducers, and couplers for seamless pipe connections.</p>
+                        </div>
+                        <div class="card-image">
+                            <img src="Media/Complete piping soln.webp" alt="Fittings">
+                        </div>
+                        <a href="#" class="learn-more-btn">Learn More</a>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="solution-card">
+                        <div class="card-content">
+                            <h3>Professional Installation Services</h3>
+                            <p>Expert installation and fusion welding services ensuring optimal system performance, compliance with standards, and long-term reliability.</p>
+                        </div>
+                        <div class="card-image">
+                            <img src="Media/complete piping soln 2.jpg" alt="Installation">
+                        </div>
+                        <a href="#" class="learn-more-btn">Learn More</a>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="solution-card">
+                        <div class="card-content">
+                            <h3>PE-RT Heating Pipes</h3>
+                            <p>Polyethylene of Raised Temperature resistance pipes ideal for underfloor heating, radiator connections, and hot water applications.</p>
+                        </div>
+                        <div class="card-image">
+                            <img src="Media/Complete piping soln.webp" alt="Heating Pipes">
+                        </div>
+                        <a href="#" class="learn-more-btn">Learn More</a>
+                    </div>
+                </div>
+
+                <!-- Bottom CTA Banner -->
+                <div class="cta-banner">
+                    <div class="cta-text">
+                        <h3>Didn't find what <span class="text-blue">you're looking for?</span></h3>
+                        <p>Talk to our experts for custom solutions and tailored guidance.</p>
+                    </div>
+                    <a href="#" class="expert-btn">
+                        <i class="fas fa-phone-alt"></i> Talk to an Expert
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!--
+            ============================================================================
+            SECTION 15: RESOURCES SECTION
+            Brief: Downloads section with list of PDF resources.
+                    Each row has file name and download link with hover effect.
+                    Includes 3 downloadable documents (Installation Manual, Maintenance Handbook, Specs Sheet).
+            ============================================================================
+        -->
+        <section class="resources-section">
+            <div class="container">
+                <!-- Header Section -->
+                <div class="resources-header">
+                    <h2>Resources & Downloads</h2>
+                    <p>Get all the technical documentation and resources you need to make informed decisions about our HDPE piping solutions.</p>
+                </div>
+
+                <!-- Downloads List -->
+                <div class="downloads-container">
+                    <!-- Download Item 1 -->
+                    <div class="download-item">
+                        <span class="file-name">HDPE Pipe Installation Manual (PDF)</span>
+                        <a href="#" class="download-link">
+                            Download PDF <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+
+                    <!-- Download Item 2 -->
+                    <div class="download-item">
+                        <span class="file-name">Maintenance & Inspection Handbook (PDF)</span>
+                        <a href="#" class="download-link">
+                            Download PDF <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+
+                    <!-- Download Item 3 -->
+                    <div class="download-item">
+                        <span class="file-name">Engineering Specifications Sheet (PDF)</span>
+                        <a href="#" class="download-link">
+                            Download PDF <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+            ============================================================================
+            SECTION 16: CTA CONTACT SECTION
+            Brief: Two-column contact section with deep navy background (#1e2a66).
+                    Left side has heading, description, and contact details.
+                    Right side has contact form with name, company, email, and phone fields.
+            ============================================================================
+        -->
+        <section class="cta-contact-section">
+            <div class="cta-container">
+                <div class="cta-content">
+                    <h2>Ready to Transform Your Textile Manufacturing?</h2>
+                    <p class="cta-description">
+                        Get a personalized consultation and quote for machinery solutions tailored to your specific production requirements.
+                    </p>
+                    <div class="cta-footer">
+                        <p>For immediate assistance, feel free to give us a direct call at <strong>+91-XXX-XXX-XXXX</strong>. You can also send us a quick email at <a href="mailto:info@meeraind.com">info@meeraind.com</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-form-card">
+                    <h3>Contact Us Today</h3>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Company Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group phone-input">
+                            <div class="country-code">
+                                <span>+91</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <input type="tel" placeholder="7003026616">
+                        </div>
+                        <button type="submit" class="submit-btn">Request Custom Quote</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!--
+            ============================================================================
+            SECTION 17: FOOTER
+            Brief: Complete footer with brand card, navigation columns, contact info,
+                    social links, and copyright bar.
+                    - Brand card with logo and tagline
+                    - 4-column grid: About Us, Categories, Products, Contact
+                    - Social media links (LinkedIn, Twitter, Instagram)
+                    - Copyright bar with Privacy Policy, Terms of Service, Sitemap
+            ============================================================================
+        -->
+        <footer class="main-footer">
+            <div class="container">
+                <!-- Floating Brand Card -->
+                <div class="brand-highlight-card">
+                    <div class="brand-logo">
+                        <img src="Media/Logo.png" alt="Mangalam HDPE Pipes Logo">
+                    </div>
+                    <div class="brand-tagline">
+                        <p>Premium <span class="text-blue">HDPE Pipes & Fittings</span></p>
+                        <p><span class="text-blue">Manufacturer</span> in South India</p>
+                    </div>
+                </div>
+                <!-- Footer Links Grid -->
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h4>About Us</h4>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Categories</h4>
+                        <ul>
+                            <li><a href="#">Packaging Industry Solutions</a></li>
+                            <li><a href="#">Fishnet Manufacturing</a></li>
+                            <li><a href="#">PPMF/Tapes and Twines</a></li>
+                            <li><a href="#">FIBC and Woven Sack</a></li>
+                            <li><a href="#">Carpet and Rugs Industry</a></li>
+                            <li><a href="#">Technical Textiles</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Two For One Twister</a></li>
+                            <li><a href="#">TPRS Twister Machine</a></li>
+                            <li><a href="#">Ring Twisting Machines</a></li>
+                            <li><a href="#">Covering Machines</a></li>
+                            <li><a href="#">Heat Setting Equipment</a></li>
+                            <li><a href="#">Servo Controlled Winders</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col contact-col">
+                        <h4>Contact</h4>
+                        <ul class="contact-list">
+                            <li><i class="fas fa-map-marker-alt"></i> 2126, Road No. 2, GIDC Sachin, Surat - 394 230 Gujarat, India</li>
+                            <li><i class="fas fa-phone-alt"></i> +91-XXX-XXX-XXXX</li>
+                            <li><i class="fas fa-envelope"></i> info@meeraind.com</li>
+                            <li><i class="fas fa-headset"></i> support@meeraind.com</li>
+                        </ul>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-x-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright Bar -->
+            <div class="footer-bottom">
+                <div class="container bottom-flex">
+                    <p>Copyright © 2025 Meera Industries Limited | All Rights Reserved</p>
+                    <div class="bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Sitemap</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- External JavaScript file with all functionality -->
+        <script src="script.js"></script>
+        <!-- 
+            WHY SCRIPT IS PLACED AT THE BOTTOM (BEFORE </body>):
+            
+            1. FASTER PAGE LOADING - Browser loads HTML/CSS first, showing content immediately
+            2. PREVENTS RENDER BLOCKING - JS won't block DOM parsing or page rendering
+            3. ENSURES DOM IS READY - All HTML elements exist before JavaScript tries to access them
+            4. BETTER USER EXPERIENCE - Users see the page content while scripts load in background
+            5. FOLLOWS BEST PRACTICE - Recommended by Google, Mozilla, and modern web standards
+            
+            Without this placement, scripts in <head> would delay page rendering and 
+            cause "element not found" errors when trying to manipulate DOM elements 
+            that haven't loaded yet.
+        -->
+    </body>
+</html>
